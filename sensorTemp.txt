@@ -1,0 +1,38 @@
+const int ledCooler = 10;
+const int sound = 9;
+const int sensorTmp36 = A0; 
+const int tempAlerta = 30; 
+const int tempPerigo = 50; 
+float temperaturaC = 0;
+
+
+  
+void setup()
+{
+  Serial.begin(9600);
+  pinMode(ledCooler, OUTPUT);
+  pinMode(sound, OUTPUT);
+  pinMode(sensorTmp36, INPUT);   
+
+}
+
+void loop()
+{
+
+  temperaturaC = map(((analogRead(sensorTmp36) - 20) * 3.04), 0, 1023, -40, 125);
+  Serial.println(temperaturaC);
+  
+  if(temperaturaC < tempAlerta){
+  	digitalWrite(sound, LOW);
+    digitalWrite(ledCooler, LOW); 
+  }
+  if(temperaturaC >= tempAlerta && temperaturaC < tempPerigo){                 
+    digitalWrite(sound, HIGH); 
+  }
+  if(temperaturaC >= tempPerigo){  
+    digitalWrite(ledCooler, HIGH);           
+    digitalWrite(sound, HIGH);            
+  
+    }
+  delay(1000);
+}
